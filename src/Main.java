@@ -6,7 +6,6 @@ import java.util.*;
 Не могу до конца разобраться с генерированием госномеров. Как сгенерировать номера в формате А000ВЕ.
 Есть косяк при генерировании номеров, если вводить, например, А333АВ54, то его нет в списке, хотя должен быть.
 И в принципе генерирования формата с начальной буквой А не произошло.
-Почему в HashSet и TreeSet время поиска всегда составляет 0?
  */
 
 
@@ -111,9 +110,9 @@ public class Main
             String search = scanner.nextLine();
 
             // Прямой перебор
-            long start1 = System.currentTimeMillis();
+            long start1 = System.nanoTime();
             boolean search1 = list.contains(search);
-            long duration1 = System.currentTimeMillis() - start1;
+            long duration1 = System.nanoTime() - start1;
             if (search1) {
                 System.out.println("Поиск перебором: номер найден, время поиска: " + duration1 + " нс");
             } else {
@@ -121,10 +120,10 @@ public class Main
             }
 
             // Бинарный поиск
-            long start2 = System.currentTimeMillis();
             Collections.sort(list);
+            long start2 = System.nanoTime();
             int search2 = Collections.binarySearch(list, search);
-            long duration2 = System.currentTimeMillis() - start2;
+            long duration2 = System.nanoTime() - start2;
             if (search2 > 0) {
                 System.out.println("Бинарный поиск: номер найден, время поиска: " + duration2 + " нс");
             } else {
@@ -132,9 +131,9 @@ public class Main
             }
 
             // TreeSet
-            long start3 = System.currentTimeMillis();
+            long start3 = System.nanoTime();
             boolean search3 = tree.contains(search);
-            long duration3 = System.currentTimeMillis() - start3;
+            long duration3 = System.nanoTime() - start3;
             if (search3) {
                 System.out.println("Поиск в HashSet: номер найден, время поиска: " + duration3 + " нс");
             } else {
@@ -142,9 +141,9 @@ public class Main
             }
 
             // HashSet
-            long start4 = System.currentTimeMillis();
+            long start4 = System.nanoTime();
             boolean search4 = set.contains(search);
-            long duration4 = System.currentTimeMillis() - start4;
+            long duration4 = System.nanoTime() - start4;
             if (search4) {
                 System.out.println("Поиск в TreeSet: номер найден, время поиска: " + duration4 + " нс");
             } else {
