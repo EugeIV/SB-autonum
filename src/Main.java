@@ -1,104 +1,37 @@
 import java.util.*;
 
-/*
-Нужна помощь:
-Код получился очень массивным, всяко есть возможность минимизировать код генерирования госномеров.
-Не могу до конца разобраться с генерированием госномеров. Как сгенерировать номера в формате А000ВЕ.
-Есть косяк при генерировании номеров, если вводить, например, А333АВ54, то его нет в списке, хотя должен быть.
-И в принципе генерирования формата с начальной буквой А не произошло.
- */
-
-
 public class Main
 {
     public static void main(String[] args)
     {
-        // A333AA197
-        // А, В, Е, К, М, Н, О, Р, С, Т, У, Х
-
         Scanner scanner = new Scanner(System.in);
         ArrayList<String> list = new ArrayList<>();
         HashSet<String> set = new HashSet<>();
         TreeSet<String> tree = new TreeSet<>();
         String[] arrayLiters = new String[]{"А", "В", "Е", "К", "М", "Н", "О", "Р", "С", "Т", "У", "Х"};
 
-        //Создание массива регионов и преобразование их в строку правильного формата
-        String[] regions = new String[199];
+        //Создание массива регионов в правильном формате
+        String[] regions = new String[5];
         for (int i = 0; i < regions.length; i++)
         {
-            if (i >= 0 && i < 9)
-            {
-                String k = Integer.toString(i + 1);
-                regions[i] = "0" + k;
-            }
-            else
-            {
-                regions[i] = Integer.toString(i + 1);
-            }
+            regions[i] = String.format("%02d", i + 1);
         }
 
-
-        //Добавляем в список номера с одинаковыми буквами
-        for (int m = 0; m < regions.length; m++)
+        // Создание списка номеров
+        for (String region : regions)
         {
-            for (int i = 0; i < arrayLiters.length; i++)
+            for (String arrayLiterFirst : arrayLiters)
             {
-                for (int j = 1; j <= 999; j++)
+                for (String arrayLiterSecond : arrayLiters)
                 {
-                    if (j >= 1 && j < 10)
+                    for (String arrayLiterThird : arrayLiters)
                     {
-                        String str00 = Integer.toString(j);
-                        list.add(arrayLiters[i] + "00" + str00 + arrayLiters[i] + arrayLiters[i] + regions[m]);
+                        for (int j = 1; j <= 999; j++)
+                        {
+                            String str = String.format("%03d", j);
+                            list.add(arrayLiterFirst + str + arrayLiterSecond + arrayLiterThird + region);
+                        }
                     }
-                    else if (j >= 10 && j < 100)
-                    {
-                        String str0 = Integer.toString(j);
-                        list.add(arrayLiters[i] + "0" + str0 + arrayLiters[i] + arrayLiters[i] + regions[m]);
-                    }
-                    else
-                    {
-                        String str = Integer.toString(j);
-                        list.add(arrayLiters[i] + str + arrayLiters[i] + arrayLiters[i] + regions[m]);
-                    }
-                }
-            }
-        }
-
-        //Добавляем в список номера типа A000AB
-        for (int m = 0; m < regions.length; m++)
-        {
-            for (int i = 0; i < arrayLiters.length - 1; i++)
-            {
-                for (int j = 1; j <= 9; j++)
-                {
-                    String k = Integer.toString(j);
-                    list.add(arrayLiters[i] + k + k + k + arrayLiters[i] + arrayLiters[i + 1] + regions[m]);
-                }
-            }
-        }
-
-        //Добавляем в список номера типа A000BA
-        for (int m = 0; m < regions.length; m++)
-        {
-            for (int i = 0; i < arrayLiters.length - 1; i++)
-            {
-                for (int j = 1; j <= 9; j++)
-                {
-                    String k = Integer.toString(j);
-                    list.add(arrayLiters[i] + k + k + k + arrayLiters[i + 1] + arrayLiters[i] + regions[m]);
-                }
-            }
-        }
-
-        //Добавляем в список номера типа B000AA
-        for (int m = 0; m < regions.length; m++)
-        {
-            for (int i = 0; i < arrayLiters.length - 1; i++)
-            {
-                for (int j = 1; j <= 9; j++)
-                {
-                    String k = Integer.toString(j);
-                    list.add(arrayLiters[i + 1] + k + k + k + arrayLiters[i] + arrayLiters[i] + regions[m]);
                 }
             }
         }
@@ -124,7 +57,7 @@ public class Main
             long start2 = System.nanoTime();
             int search2 = Collections.binarySearch(list, search);
             long duration2 = System.nanoTime() - start2;
-            if (search2 > 0) {
+            if (search2 >= 0) {
                 System.out.println("Бинарный поиск: номер найден, время поиска: " + duration2 + " нс");
             } else {
                 System.out.println("Бинарный поиск: номер не найден, время поиска: " + duration2 + " нс");
